@@ -1,0 +1,170 @@
+`timescale 1ns/1ps
+module tb;
+reg [1:0]select;
+reg clk, rst, counterstartbutton, counterrst, lapbutton, stopwatchstart, stopwatchstop, stopwatchreset, settime, alarmrst, soundoffbutton;
+reg [4:0]countdowniphour;
+reg [5:0]countdownipmin, countdownipsec;
+reg [14:0]alarmiphour;
+reg [17:0]alarmipmin;
+reg [17:0]alarmipsec;
+reg [2:0]alarmenable;
+reg [4:0]initialclockhour;
+reg [5:0]initialclockmin, initialclocksec;
+wire sound;
+wire [4:0]ophour;
+wire [5:0]opmin, opsec;
+wire [164:0]laphour;
+wire [197:0]lapmin;
+wire [197:0]lapsec;
+
+initial
+begin
+clk=0;
+end
+always #5 clk=~clk;
+
+/*
+always @(uut.stopsec)
+begin
+#1
+$display("%d : %d : %d",ophour,opmin,opsec);
+end
+*/
+  
+
+/*
+always @(uut.c1.s) 
+begin
+#1
+$display("%d : %d : %d",uut.c1.h,uut.c1.m,uut.c1.s);
+end
+*/
+  
+
+/*
+always @(uut.clocksec) 
+begin
+#1
+$display("%d : %d : %d ", uut.clockhour, uut.clockmin, uut.clocksec);
+end
+
+
+always @(posedge uut.alarmsound) 
+begin
+#1
+$display("BEEP BEEP, %d : %d : %d ", uut.clockhour, uut.clockmin, uut.clocksec);
+end
+
+always @(negedge uut.alarmsound)
+begin
+#1
+$display("ALARM TURNED OFF");
+end
+*/
+  
+
+/*
+always @(opsec)
+begin
+#1
+$display("%d : %d : %d",ophour,opmin,opsec);
+end
+*/
+
+
+app uut(select,clk,alarmenable,alarmiphour,alarmipmin,alarmipsec,alarmrst,soundoffbutton,stopwatchstart,stopwatchstop,stopwatchreset,countdowniphour,countdownipmin,countdownipsec,counterstartbutton,counterrst,lapbutton,rst,settime,initialclockhour,initialclockmin,initialclocksec,sound,ophour,opmin,opsec,laphour,lapmin,lapsec);
+
+initial begin
+rst=1;
+settime=0;
+select=0;
+counterstartbutton=0;
+counterrst=1;
+lapbutton=0;
+stopwatchstart=0;
+stopwatchstop=0;
+stopwatchreset=1;
+alarmrst=1;
+soundoffbutton=0;
+initialclockhour=1;
+initialclockmin=29;
+initialclocksec=0;
+countdowniphour=0;
+countdownipmin=0;
+countdownipsec=30;
+alarmiphour=0;
+alarmipmin=0;
+alarmipsec=0;
+alarmenable=0;
+#5
+rst=0;
+
+/*
+stopwatchreset=0;
+@(posedge clk)
+#1 settime=1;
+@(posedge clk)
+#1 settime=0;
+select=2'b01;
+stopwatchstart=1;
+#100 stopwatchstop=1;
+#50 stopwatchstop=0;
+#10000 stopwatchstart=0;
+*/
+
+  
+/*
+counterrst=0;
+@(posedge clk) 
+#5 counterstartbutton=1;
+#500
+@(posedge clk)
+#1 lapbutton=1;
+@(posedge clk)
+#1 lapbutton=0;
+#1000
+@(posedge clk)
+#1 lapbutton=1;
+@(posedge clk)
+#1 lapbutton=0;
+#10000
+$display("lap1 : %2d : %2d : %2d",laphour[4:0],lapmin[5:0],lapsec[5:0]);
+$display("lap2 : %2d : %2d : %2d",laphour[9:5],lapmin[11:6],lapsec[11:6]);
+*/
+
+  
+/*
+select=2'b00;
+@(posedge clk)
+#1 settime=1;
+@(posedge clk)
+#1 settime=0;
+alarmiphour={5'd0, 5'd0, 5'd1};
+alarmipmin={6'd0, 6'd0, 6'd30};
+alarmipsec={6'd0, 6'd0, 6'd0};
+alarmenable=3'b001;
+alarmrst=0;
+#6000
+@(posedge clk)
+#1 soundoffbutton=1;
+@(posedge clk)
+#1 soundoffbutton=0;
+$display("ALARM TURNED OFF");
+#10 alarmrst=1;
+*/
+
+  
+/*
+select=2'b11;
+@(posedge clk)
+#1 settime=1;
+@(posedge clk)
+#1 settime=0;
+#10000
+rst=1;
+*/
+  
+#10000
+$finish;
+end
+endmodule
