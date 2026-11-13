@@ -1,0 +1,50 @@
+module stopwatch( clk, start, stop, stopwatchreset, stopwatchh, stopwatchm, stopwatchs);
+input clk, start, stop, stopwatchreset;
+output reg [4:0]stopwatchh;
+output reg [5:0]stopwatchm, stopwatchs;
+reg [32:0]counter;
+
+initial
+begin
+counter<= 0;
+stopwatchh<= 0;
+stopwatchm<= 0;
+stopwatchs<= 0;
+end
+
+always @(posedge clk or posedge stopwatchreset)
+begin
+if(stopwatchreset)
+begin
+counter<= 0;
+stopwatchh<= 0;
+stopwatchm<= 0;
+stopwatchs<= 0;
+end
+else if(start && !stop )
+begin
+if(counter == 'ONESECPULSES-1)
+begin
+counter<= 0;
+if(stopwatchs == 59)
+begin
+stopwatchs<= 0;
+if(stopwatchm == 59)
+begin
+stopwatchm<= 0;
+if(stopwatchh == 23)
+stopwatchh<= 0;
+else
+stopwatchh<= stopwatchh + 1'b1;
+end
+else
+stopwatchm<= stopwatchm + 1'b1;
+end
+else
+stopwatchs<= stopwatchs + 1'b1;
+end
+else
+counter<= counter + 1'b1;
+end
+end
+endmodule
